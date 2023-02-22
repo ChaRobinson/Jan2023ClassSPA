@@ -1,4 +1,10 @@
 export default {
   header: "My Home Page",
-  view: "Home"
+  view: "Home",
+  weather: {}
 };
+
+// export default {
+//   header: "My Home Page",
+//   view: "Home"
+// };
