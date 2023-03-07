@@ -2,10 +2,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const pizzas = require("./routers/pizzas");
+
 dotenv.config();
 
 const PORT = process.env.PORT || 4040; // we use || to provide a default value
-// Initialize the Express application
 
 mongoose.connect(process.env.MONGODB);
 const db = mongoose.connection;
@@ -15,8 +16,8 @@ db.once(
   "open",
   console.log.bind(console, "Successfully opened connection to Mongo!")
 );
-//unique to mongoose.  don't mess with it
 
+// Initialize the Express application
 const app = express();
 
 const logging = (request, response, next) => {
@@ -26,6 +27,7 @@ const logging = (request, response, next) => {
 
 app.use(express.json());
 app.use(logging);
+
 // Handle the request with HTTP GET method from http://localhost:4040/status
 app.get("/status", (request, response) => {
   // Create the headers for response by default 200
@@ -59,7 +61,8 @@ app.post("/add", (request, response) => {
   response.json(responseBody);
 });
 
-// Tell the Express app to start listening
+app.use("/pizzas", pizzas);
 
+// Tell the Express app to start listening
 // Let the humans know I am running and listening on 4040
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
